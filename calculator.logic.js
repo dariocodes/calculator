@@ -1,6 +1,6 @@
 //math functions
 function add(firstInput, secondInput) {
-  return firstInput + secondInput;
+  return +firstInput + +secondInput;
 }
 
 function subtract(firstInput, secondInput) {
@@ -85,6 +85,9 @@ function inputSecondNumber(event) {
   }
   display.innerHTML += event.target.innerText;
   equalsButton.addEventListener("click", calculateCurrent);
+  operatorButtonsArr.forEach((button) =>
+    button.addEventListener("click", calculateContinue)
+  );
 }
 
 // calculate upon equals press
@@ -96,6 +99,21 @@ function calculateCurrent() {
     button.removeEventListener("click", inputSecondNumber)
   );
   equalsButton.removeEventListener("click", calculateCurrent);
+}
+
+function calculateContinue(event) {
+  secondInput = display.innerText;
+  display.innerText = operate(operator, firstInput, secondInput);
+  firstInput = display.innerText;
+  operator = event.target.innerText;
+  operatorButtonsArr.forEach((button) =>
+    button.removeEventListener("click", calculateContinue)
+  );
+  executed = false;
+  secondInput = "";
+  numberButtonsArr.forEach((button) =>
+    button.addEventListener("click", inputSecondNumber)
+  );
 }
 
 // clearing logic
@@ -128,4 +146,7 @@ function resetCalc() {
     button.removeEventListener("click", inputSecondNumber)
   );
   equalsButton.removeEventListener("click", calculateCurrent);
+  operatorButtonsArr.forEach((button) =>
+    button.removeEventListener("click", calculateContinue)
+  );
 }
