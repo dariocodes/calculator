@@ -31,7 +31,7 @@ function operate(operator, firstInput, secondInput) {
 }
 
 //display and input gathering
-let display = document.getElementById("screen");
+const display = document.getElementById("screen");
 //variables for calculations
 let firstInput;
 let secondInput;
@@ -42,6 +42,7 @@ const numberButtonsArr = Array.from(numberButtons);
 const equalsButton = document.getElementById("equals");
 const operatorButtons = document.querySelectorAll(".operator");
 const operatorButtonsArr = Array.from(operatorButtons);
+const dotBtn = document.getElementById("dot");
 
 // add event listener to number buttons
 numberButtonsArr.forEach((button) =>
@@ -49,11 +50,22 @@ numberButtonsArr.forEach((button) =>
 );
 
 let executedOnce = true;
+let dotUsed = false;
 function inputFirstNumber(event) {
   if (!executedOnce) {
     resetCalc();
+    let dotUsed = false;
   }
   display.innerText += event.target.innerText;
+  dotBtn.addEventListener("click", addDot);
+}
+
+//handle dot
+function addDot(event) {
+  if (!dotUsed) {
+    display.innerText += event.target.innerText;
+    dotUsed = true;
+  }
 }
 
 //add event listener to operator buttons
@@ -66,6 +78,7 @@ function inputOperator(event) {
   operatorButtonsArr.forEach((button) =>
     button.removeEventListener("click", inputOperator)
   );
+
   numberButtonsArr.forEach((button) =>
     button.removeEventListener("click", inputFirstNumber)
   );
@@ -85,8 +98,10 @@ function inputSecondNumber(event) {
   if (!executed) {
     display.innerText = "";
     executed = true;
+    dotUsed = false;
     clearBtn.addEventListener("click", deleteChar);
   }
+  dotBtn.addEventListener("click", addDot);
   display.innerHTML += event.target.innerText;
   equalsButton.addEventListener("click", calculateCurrent);
   operatorButtonsArr.forEach((button) =>
@@ -105,6 +120,7 @@ function calculateCurrent() {
   equalsButton.removeEventListener("click", calculateCurrent);
   executed = false;
   executedOnce = false;
+  dotUsed = true;
   numberButtonsArr.forEach((button) =>
     button.addEventListener("click", inputFirstNumber)
   );
@@ -125,6 +141,7 @@ function calculateContinue(event) {
     button.removeEventListener("click", calculateContinue)
   );
   executed = false;
+  dotUsed = true;
   secondInput = "";
   numberButtonsArr.forEach((button) =>
     button.addEventListener("click", inputSecondNumber)
@@ -150,6 +167,7 @@ function resetCalc() {
   operator = "";
   executed = false;
   executedOnce = true;
+  dotUsed = false;
   numberButtonsArr.forEach((button) =>
     button.addEventListener("click", inputFirstNumber)
   );
@@ -167,5 +185,4 @@ function resetCalc() {
   );
 }
 
-//handle the . button
 //handle numbers which are too long
