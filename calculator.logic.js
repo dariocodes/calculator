@@ -32,11 +32,18 @@ function operate(operator, firstInput, secondInput) {
 
 //display and input gathering
 let display = document.getElementById("screen");
+//variables for calculations
 let firstInput;
+let secondInput;
 let operator;
+// get buttons
 const numberButtons = document.querySelectorAll(".number");
 const numberButtonsArr = Array.from(numberButtons);
+const equalsButton = document.getElementById("equals");
+const operatorButtons = document.querySelectorAll(".operator");
+const operatorButtonsArr = Array.from(operatorButtons);
 
+// add event listener to number buttons
 numberButtonsArr.forEach((button) =>
   button.addEventListener("click", inputFirstNumber)
 );
@@ -45,13 +52,12 @@ function inputFirstNumber(event) {
   display.innerText += event.target.innerText;
 }
 
-const operatorButtons = document.querySelectorAll(".operator");
-const operatorButtonsArr = Array.from(operatorButtons);
-
+//add event listener to operator buttons
 operatorButtonsArr.forEach((button) =>
   button.addEventListener("click", inputOperator)
 );
 
+//once operator button is clicked remove listeners for all buttons except secondnumber
 function inputOperator(event) {
   operatorButtonsArr.forEach((button) =>
     button.removeEventListener("click", inputOperator)
@@ -59,7 +65,67 @@ function inputOperator(event) {
   numberButtonsArr.forEach((button) =>
     button.removeEventListener("click", inputFirstNumber)
   );
+  clearBtn.removeEventListener("click", deleteChar);
+
+  numberButtonsArr.forEach((button) =>
+    button.addEventListener("click", inputSecondNumber)
+  );
   operator = event.target.innerText;
   firstInput = display.innerText;
   display.innerText = `${firstInput} ${event.target.innerText}`;
+}
+
+//once user inputs second number clear display and get ready to calculate
+let executed = false;
+function inputSecondNumber(event) {
+  if (!executed) {
+    display.innerText = "";
+    executed = true;
+    clearBtn.addEventListener("click", deleteChar);
+  }
+  display.innerHTML += event.target.innerText;
+  equalsButton.addEventListener("click", calculateCurrent);
+}
+
+// calculate upon equals press
+function calculateCurrent() {
+  secondInput = display.innerText;
+  display.innerText = operate(operator, firstInput, secondInput);
+  firstInput = display.innerText;
+  numberButtonsArr.forEach((button) =>
+    button.removeEventListener("click", inputSecondNumber)
+  );
+  equalsButton.removeEventListener("click", calculateCurrent);
+}
+
+// clearing logic
+const clearBtn = document.getElementById("clear");
+clearBtn.addEventListener("click", deleteChar);
+clearBtn.addEventListener("dblclick", resetCalc);
+
+// handle single clicks
+function deleteChar() {
+  let newDisplay = display.innerText.substring(0, display.innerText.length - 1);
+  display.innerText = newDisplay;
+}
+
+//handle double clicks
+function resetCalc() {
+  display.innerText = "";
+  firstInput = "";
+  secondInput = "";
+  operator = "";
+  executed = false;
+  numberButtonsArr.forEach((button) =>
+    button.addEventListener("click", inputFirstNumber)
+  );
+  operatorButtonsArr.forEach((button) =>
+    button.addEventListener("click", inputOperator)
+  );
+  clearBtn.addEventListener("click", deleteChar);
+
+  numberButtonsArr.forEach((button) =>
+    button.removeEventListener("click", inputSecondNumber)
+  );
+  equalsButton.removeEventListener("click", calculateCurrent);
 }

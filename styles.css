@@ -15,9 +15,7 @@ body {
   box-sizing: border-box;
   background-color: gray;
   max-width: 45vmin;
-  aspect-ratio: 1/1;
   margin: auto;
-  height: fit-content;
   padding: 5vmin;
   border-radius: 15px;
   display: flex;
