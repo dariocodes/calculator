@@ -27,6 +27,7 @@ body {
   margin: auto;
   background-color: lightblue;
   width: 100%;
+  overflow: hidden;
   min-height: 2em;
   display: flex;
   justify-content: center;
@@ -37,6 +38,7 @@ body {
   box-shadow: inset 0px 2px 10px rgba(0, 0, 0, 0.365);
   border-radius: 5px;
   font-weight: bold;
+  word-break: break-all;
 }
 
 #controls {

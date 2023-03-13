@@ -184,5 +184,3 @@ function resetCalc() {
     button.removeEventListener("click", calculateContinue)
   );
 }
-
-//handle numbers which are too long
