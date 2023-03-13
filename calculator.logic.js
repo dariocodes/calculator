@@ -48,7 +48,11 @@ numberButtonsArr.forEach((button) =>
   button.addEventListener("click", inputFirstNumber)
 );
 
+let executedOnce = true;
 function inputFirstNumber(event) {
+  if (!executedOnce) {
+    resetCalc();
+  }
   display.innerText += event.target.innerText;
 }
 
@@ -99,6 +103,10 @@ function calculateCurrent() {
     button.removeEventListener("click", inputSecondNumber)
   );
   equalsButton.removeEventListener("click", calculateCurrent);
+  executedOnce = false;
+  numberButtonsArr.forEach((button) =>
+    button.addEventListener("click", inputFirstNumber)
+  );
 }
 
 function calculateContinue(event) {
@@ -134,6 +142,7 @@ function resetCalc() {
   secondInput = "";
   operator = "";
   executed = false;
+  executedOnce = true;
   numberButtonsArr.forEach((button) =>
     button.addEventListener("click", inputFirstNumber)
   );
@@ -150,3 +159,6 @@ function resetCalc() {
     button.removeEventListener("click", calculateContinue)
   );
 }
+
+//handle the . button
+//handle numbers which are too long
