@@ -103,9 +103,16 @@ function calculateCurrent() {
     button.removeEventListener("click", inputSecondNumber)
   );
   equalsButton.removeEventListener("click", calculateCurrent);
+  executed = false;
   executedOnce = false;
   numberButtonsArr.forEach((button) =>
     button.addEventListener("click", inputFirstNumber)
+  );
+  operatorButtonsArr.forEach((button) =>
+    button.removeEventListener("click", calculateContinue)
+  );
+  operatorButtonsArr.forEach((button) =>
+    button.addEventListener("click", inputOperator)
   );
 }
 
